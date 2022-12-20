@@ -36,15 +36,21 @@ public class Player : MonoBehaviour
             }
         }
     }
-
+    
+    //コルーチンを使って徐々に目的地に近づける
     IEnumerator Move(Vector3 targetPos)
     {
+        //移動中は入力を受け付けたくない
         isMoving = true;
 
         //targetと現在のpositionの差がある間は、MoveTowardsでtargetPosに近く
-        while((targetPos - transform.position).sqrMagnitude>Mathf.Epsilon)
+        while((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(
+                transform.position,          //現在の場所
+                targetPos,                   //目的地
+                moveSpeed * Time.deltaTime   //スピード
+                );
             yield return null;
         }
 
