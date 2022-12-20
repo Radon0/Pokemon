@@ -25,6 +25,12 @@ public class Player : MonoBehaviour
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
 
+            //ŽÎ‚ßˆÚ“®
+            if(input.x != 0)
+            {
+                input.y = 0;
+            }
+
             //“ü—Í‚ª‚ ‚Á‚½‚ç
             if(input != Vector2.zero)
             {
