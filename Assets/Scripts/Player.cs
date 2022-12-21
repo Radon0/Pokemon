@@ -11,6 +11,9 @@ public class Player : MonoBehaviour
 
     Animator animator;
 
+    //•Ç”»’è‚ÌLayer
+    [SerializeField] LayerMask SolidObjects;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -48,7 +51,10 @@ public class Player : MonoBehaviour
                 Vector2 targetPos = transform.position;
                 targetPos.x += input.x;
                 targetPos.y += input.y;
-                StartCoroutine(Move(targetPos));
+                if(IsWalkable(targetPos))
+                {
+                    StartCoroutine(Move(targetPos));
+                }
             }
         }
 
@@ -75,5 +81,16 @@ public class Player : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
+    }
+
+    //targetPos‚ÉˆÚ“®‰Â”\‚©‚ğ’²‚×‚éŠÖ”
+    bool IsWalkable(Vector2 targetPos)
+    {
+        //targetPos‚É”¼Œa0.2f‚Ì‰~‚ÌRay‚ğ”ò‚Î‚µ‚ÄA‚Ô‚Â‚©‚Á‚½‚çtrue
+        //‚»‚Ì”Û’è‚¾‚©‚ç!‚ğ•Ô‚µ‚ÄA’Ê‚ê‚È‚­‚·‚é
+        //bool hit = Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjects);
+        //return !hit;
+        return !Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjects);
+        //return !Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjects) == false;
     }
 }
