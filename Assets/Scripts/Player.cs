@@ -12,7 +12,9 @@ public class Player : MonoBehaviour
     Animator animator;
 
     //壁判定のLayer
-    [SerializeField] LayerMask SolidObjects;
+    [SerializeField] LayerMask solidObjectsLayer;
+    //草むら判定のLayer
+    [SerializeField] LayerMask longGrassLayer;
 
     private void Awake()
     {
@@ -81,6 +83,7 @@ public class Player : MonoBehaviour
         transform.position = targetPos;
 
         isMoving = false;
+        CheckForEncounters();
     }
 
     //targetPosに移動可能かを調べる関数
@@ -88,9 +91,25 @@ public class Player : MonoBehaviour
     {
         //targetPosに半径0.2fの円のRayを飛ばして、ぶつかったらtrue
         //その否定だから!を返して、通れなくする
+        //書き方①
         //bool hit = Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjects);
         //return !hit;
-        return !Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjects);
+        //書き方②
+        return !Physics2D.OverlapCircle(targetPos, 0.2f, solidObjectsLayer);
+        //書き方③
         //return !Physics2D.OverlapCircle(targetPos, 0.2f, SolidObjects) == false;
+    }
+
+    //自分の場所から、円のLayerを飛ばして、草むらLayerに当たったら、ランダムエンカウント
+    void CheckForEncounters()
+    {
+        if(Physics2D.OverlapCircle(transform.position, 0.2f, longGrassLayer))
+        {
+            //ランダムエンカウント
+            if(Random.Range(0,100) < 10)
+            {
+                Debug.Log("モンスターに遭遇");
+            }
+        }
     }
 }
