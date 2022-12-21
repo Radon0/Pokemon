@@ -9,6 +9,13 @@ public class Player : MonoBehaviour
     bool isMoving;
     Vector2 input;
 
+    Animator animator;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +41,9 @@ public class Player : MonoBehaviour
             //入力があったら
             if(input != Vector2.zero)
             {
+                //向きを変えたい
+                animator.SetFloat("moveX", input.x);
+                animator.SetFloat("moveY", input.y);
                 //入力分を追加
                 Vector2 targetPos = transform.position;
                 targetPos.x += input.x;
@@ -41,6 +51,8 @@ public class Player : MonoBehaviour
                 StartCoroutine(Move(targetPos));
             }
         }
+
+        animator.SetBool("isMoving", isMoving);
     }
     
     //コルーチンを使って徐々に目的地に近づける
