@@ -10,11 +10,33 @@ public class Pokemon
     PokemonBase _base;
     int level;
 
+    public int HP { get; set; }
+
+    //使える技
+    public List<Skill> Skills { get; set; }
+
    //コンストラクタ―：生成時の初期設定
    public Pokemon(PokemonBase pBase,int pLevel)
     {
         _base = pBase;
         level = pLevel;
+        HP = pBase.MaxHP;
+
+        //使える技の設定；覚える技のレベル以上なら、Movesに追加
+        foreach(LearnableSkill learnableSkill in pBase.LearnableSkills)
+        {
+            if(level >= learnableSkill.Level)
+            {
+                //技を覚える
+                Skills.Add(new Skill(learnableSkill.Base));
+            }
+
+            //4つ以上の技は使えない
+            if(Skills.Count >=4)
+            {
+                break;
+            }
+        }
     }
 
     //levelに応じたステータスを返すもの：プロパティ（処理を加えることができる）

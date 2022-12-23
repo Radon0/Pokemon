@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,9 @@ public class PokemonBase : ScriptableObject
     [SerializeField] int spDefense;
     [SerializeField] int speed;
 
+    //覚える技一覧
+    [SerializeField] List<LearnableSkill> learnableSkills;
+
     //外部から書き換えたいとき
     //public int Attack()
     //{
@@ -41,12 +45,25 @@ public class PokemonBase : ScriptableObject
     public int SpAttack { get => spAttack; }
     public int SpDefense { get => spDefense; }
     public int Speed { get => speed; }
-   
+
+    public List<LearnableSkill> LearnableSkills { get => learnableSkills; }
+}
+
+[Serializable]
+public class LearnableSkill
+{
+    //ヒエラルキーで設定する
+    [SerializeField] SkillBase _base;
+    [SerializeField] int level;
+
+    public SkillBase Base { get => _base; }
+    public int Level { get => level; }
 }
 
 public enum PokemonType
 {
     None,
+    Normal,
     Fire,
     Water,
     Electric,
