@@ -1278,6 +1278,7 @@ GameObject:
   - component: {fileID: 377425015}
   - component: {fileID: 377425017}
   - component: {fileID: 377425016}
+  - component: {fileID: 377425018}
   m_Layer: 0
   m_Name: PlayerUnit
   m_TagString: Untagged
@@ -1342,6 +1343,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 377425014}
   m_CullTransparentMesh: 1
+--- !u!114 &377425018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377425014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416a65f9e7444e345a69572d5e1ad4f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _base: {fileID: 11400000, guid: f666bc767bb0cca4b9a4ceeee8939be6, type: 2}
+  level: 5
+  isPlayerUnit: 1
 --- !u!1 &405252808
 GameObject:
   m_ObjectHideFlags: 0
@@ -4355,6 +4371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 684686178}
+  - component: {fileID: 684686179}
   m_Layer: 0
   m_Name: BattleSystem
   m_TagString: Untagged
@@ -4378,6 +4395,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &684686179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 684686177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecaba8f56097d946809d599152943f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUnit: {fileID: 377425018}
+  enemyUnit: {fileID: 1061337113}
+  playerHud: {fileID: 1376167692}
+  enemyHud: {fileID: 2097412298}
 --- !u!1 &773704738
 GameObject:
   m_ObjectHideFlags: 0
@@ -5773,6 +5806,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 905674961}
+  - component: {fileID: 905674962}
   m_Layer: 0
   m_Name: HPBar
   m_TagString: Untagged
@@ -5802,6 +5836,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -18}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &905674962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905674960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6723a8c0db7153f4bb9d62c4ee2957f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 792295952}
 --- !u!1 &980073919
 GameObject:
   m_ObjectHideFlags: 0
@@ -5969,6 +6016,7 @@ GameObject:
   - component: {fileID: 1061337110}
   - component: {fileID: 1061337112}
   - component: {fileID: 1061337111}
+  - component: {fileID: 1061337113}
   m_Layer: 0
   m_Name: EnemyUnit
   m_TagString: Untagged
@@ -5993,7 +6041,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 233, y: 77}
-  m_SizeDelta: {x: 280, y: 280}
+  m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1061337111
 MonoBehaviour:
@@ -6033,6 +6081,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1061337109}
   m_CullTransparentMesh: 1
+--- !u!114 &1061337113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1061337109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 416a65f9e7444e345a69572d5e1ad4f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _base: {fileID: 11400000, guid: cc41ef9f998fb6841932778f575d1d7a, type: 2}
+  level: 5
+  isPlayerUnit: 0
 --- !u!1 &1089825187
 GameObject:
   m_ObjectHideFlags: 0
@@ -6224,6 +6287,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1264466303}
+  - component: {fileID: 1264466304}
   m_Layer: 0
   m_Name: HPBar
   m_TagString: Untagged
@@ -6253,6 +6317,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -18}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1264466304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1264466302}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6723a8c0db7153f4bb9d62c4ee2957f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: {fileID: 181393968}
 --- !u!1 &1376167688
 GameObject:
   m_ObjectHideFlags: 0
@@ -6264,6 +6341,7 @@ GameObject:
   - component: {fileID: 1376167689}
   - component: {fileID: 1376167691}
   - component: {fileID: 1376167690}
+  - component: {fileID: 1376167692}
   m_Layer: 0
   m_Name: PlayerHud
   m_TagString: Untagged
@@ -6331,6 +6409,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1376167688}
   m_CullTransparentMesh: 1
+--- !u!114 &1376167692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1376167688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2d1afe35928244db2d18b1b0974af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 1136669232}
+  levelText: {fileID: 1695609888}
+  hpBar: {fileID: 1264466304}
 --- !u!1 &1695609886
 GameObject:
   m_ObjectHideFlags: 0
@@ -6583,6 +6676,7 @@ GameObject:
   - component: {fileID: 2097412295}
   - component: {fileID: 2097412297}
   - component: {fileID: 2097412296}
+  - component: {fileID: 2097412298}
   m_Layer: 0
   m_Name: EnemyHud
   m_TagString: Untagged
@@ -6650,3 +6744,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2097412294}
   m_CullTransparentMesh: 1
+--- !u!114 &2097412298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097412294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2d1afe35928244db2d18b1b0974af6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nameText: {fileID: 280891434}
+  levelText: {fileID: 477230832}
+  hpBar: {fileID: 905674962}

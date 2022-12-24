@@ -47,6 +47,12 @@ public class PokemonBase : ScriptableObject
     public int Speed { get => speed; }
 
     public List<LearnableSkill> LearnableSkills { get => learnableSkills; }
+    public string Name { get => name; }
+    public string Description { get => description; }
+    public Sprite FrontSprite { get => frontSprite; }
+    public Sprite BackSprite { get => backSprite; }
+    public PokemonType Type1 { get => type1; }
+    public PokemonType Type2 { get => type2; }
 }
 
 [Serializable]

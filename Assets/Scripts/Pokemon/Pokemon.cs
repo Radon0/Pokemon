@@ -7,8 +7,8 @@ using UnityEngine;
 public class Pokemon
 {
     //ベースとなるデータ
-    PokemonBase _base;
-    int level;
+    public PokemonBase Base { get; set; }
+    public int Level { get; set; }
 
     public int HP { get; set; }
 
@@ -18,14 +18,15 @@ public class Pokemon
    //コンストラクタ―：生成時の初期設定
    public Pokemon(PokemonBase pBase,int pLevel)
     {
-        _base = pBase;
-        level = pLevel;
-        HP = pBase.MaxHP;
+        Base = pBase;
+        Level = pLevel;
+        HP = MaxHP;
 
+        Skills = new List<Skill>();
         //使える技の設定；覚える技のレベル以上なら、Movesに追加
         foreach(LearnableSkill learnableSkill in pBase.LearnableSkills)
         {
-            if(level >= learnableSkill.Level)
+            if(Level >= learnableSkill.Level)
             {
                 //技を覚える
                 Skills.Add(new Skill(learnableSkill.Base));
@@ -48,26 +49,26 @@ public class Pokemon
     //プロパティ
     public int Attack
     {
-        get { return Mathf.FloorToInt((_base.Attack * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5; }
     }
     public int Defense
     {
-        get { return Mathf.FloorToInt((_base.Defense * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5; }
     }
     public int SpAttack
     {
-        get { return Mathf.FloorToInt((_base.SpAttack * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5; }
     }
     public int SpDefense
     {
-        get { return Mathf.FloorToInt((_base.SpDefense * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5; }
     }
     public int Speed
     {
-        get { return Mathf.FloorToInt((_base.Speed * level) / 100f) + 5; }
+        get { return Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5; }
     }
     public int MaxHP
     {
-        get { return Mathf.FloorToInt((_base.MaxHP * level) / 100f) + 10; }
+        get { return Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10; }
     }
 }
