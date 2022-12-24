@@ -9,6 +9,16 @@ public class BattleDialogBox : MonoBehaviour
     [SerializeField] int letterPerSecond;  //1文字当たりの時間
     [SerializeField] Text dialogText;
 
+    [SerializeField] GameObject actionSelector;
+    [SerializeField] GameObject skillSelector;
+    [SerializeField] GameObject skillDetails;
+
+    [SerializeField] List<Text> actionTexts;
+    [SerializeField] List<Text> skillTexts;
+
+    [SerializeField] Text ppText;
+    [SerializeField] Text typeText;
+
     //変更するための関数
     public void SetDialog(string dialog)
     {
@@ -24,5 +34,24 @@ public class BattleDialogBox : MonoBehaviour
             dialogText.text += letter;
             yield return new WaitForSeconds(1f / letterPerSecond);
         }
+    }
+
+    //UIの表示/非表示
+
+    //dialogTextの表示管理
+    public void EnableDialogText(bool enabled)
+    {
+        dialogText.enabled = enabled;
+    }
+    //actionSelectorの表示管理
+    public void EnableActionSelector(bool enabled)
+    {
+        actionSelector.SetActive(enabled);
+    }
+    //skillSelectorの表示管理
+    public void EnableSkillSelector(bool enabled)
+    {
+        skillSelector.SetActive(enabled);
+        skillDetails.SetActive(enabled);
     }
 }
