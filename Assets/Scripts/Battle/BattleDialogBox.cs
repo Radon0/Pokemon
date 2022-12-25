@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class BattleDialogBox : MonoBehaviour
 {
+    [SerializeField] Color highlightColor;
     //dialogのTextを取得して、変更する
     [SerializeField] int letterPerSecond;  //1文字当たりの時間
     [SerializeField] Text dialogText;
@@ -53,5 +54,23 @@ public class BattleDialogBox : MonoBehaviour
     {
         skillSelector.SetActive(enabled);
         skillDetails.SetActive(enabled);
+    }
+
+    //選択中のアクションの色を変える
+    public void UpdateActionSelection(int selectAction)
+    {
+        //selectActionが0の時はactionTexts[0] 1の時はactionText[1]の色を青にして、それ以外を黒
+
+        for(int i=0; i < actionTexts.Count; i++)
+        {
+            if(selectAction == 1)
+            {
+                actionTexts[i].color = highlightColor;
+            }
+            else
+            {
+                actionTexts[i].color = Color.black;
+            }
+        }
     }
 }
