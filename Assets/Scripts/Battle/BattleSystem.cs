@@ -6,8 +6,8 @@ public enum BattleState
 {
     Start,
     PlayerAction,  //行動選択
-    PlayerMove,    //技選択
-    EnemyMove,
+    PlayerSkill,    //技選択
+    EnemySkill,
     Busy,
 }
 
@@ -21,6 +21,7 @@ public class BattleSystem : MonoBehaviour
 
     BattleState state;
     int currentAction;  //0:fight 1:run
+    int currentSkill;   //0:leftup 1:rightup 2:leftdown 3:rightdown
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class BattleSystem : MonoBehaviour
         //HUDの描画
         playerHud.SetData(playerUnit.Pokemon);
         enemyHud.SetData(enemyUnit.Pokemon);
-
+        dialogBox.SetSkillNames(playerUnit.Pokemon.Skills);
         yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.name} appeared.");
         yield return new WaitForSeconds(1);
         PlayerAction();
@@ -55,6 +56,10 @@ public class BattleSystem : MonoBehaviour
         if(state==BattleState.PlayerAction)
         {
             HandleActionSelection();
+        }
+        if (state == BattleState.PlayerSkill)
+        {
+            HandleSkillSelection();
         }
     }
 
@@ -79,7 +84,7 @@ public class BattleSystem : MonoBehaviour
 
         void PlayerMove()
         {
-            state = BattleState.PlayerMove;
+            state = BattleState.PlayerSkill;
             dialogBox.EnableDialogText(false);
             dialogBox.EnableActionSelector(false);
             dialogBox.EnableSkillSelector(true);
@@ -96,5 +101,38 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
+    void HandleSkillSelection()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            if (currentSkill < playerUnit.Pokemon.Skills.Count - 1)
+            {
+                currentSkill++;
+            }
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            if (currentSkill > 0)
+            {
+                currentSkill--;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            if (currentSkill < playerUnit.Pokemon.Skills.Count - 2)
+            {
+                currentSkill += 2;
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            if (currentSkill > 1)
+            {
+                currentSkill -= 2;
+            }
+        }
 
+        //色をつけてどちらを選択してるかわかるようにする
+        //dialogBox.UpdateSkillSelection(currentSkill,playerUnit.Pokemon.Skills(currentSkill));
+    }
 }

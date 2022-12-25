@@ -73,4 +73,38 @@ public class BattleDialogBox : MonoBehaviour
             }
         }
     }
+
+    //‘I‘ğ’†‚ÌSkill‚ÌF‚ğ•Ï‚¦‚é
+    public void UpdateSkillSelection(int selectSkill,Skill skill)
+    { 
+        for (int i = 0; i < skillTexts.Count; i++)
+        {
+            if (selectSkill == 1)
+            {
+                skillTexts[i].color = highlightColor;
+            }
+            else
+            {
+                skillTexts[i].color = Color.black;
+            }
+        }
+        ppText.text = $"PP{skill.PP}/{skill.Base.PP}";
+        typeText.text = skill.Base.Type.ToString();
+    }
+
+    public void SetSkillNames(List<Skill> skills)
+    {
+        for(int i=0; i<skillTexts.Count;i++)
+        {
+            //Šo‚¦‚Ä‚¢‚é”‚¾‚¯”½‰f
+            if(i<skills.Count)
+            {
+                skillTexts[i].text = skills[i].Base.Name;
+            }
+            else
+            {
+                skillTexts[i].text = ".";
+            }
+        }
+    }
 }
