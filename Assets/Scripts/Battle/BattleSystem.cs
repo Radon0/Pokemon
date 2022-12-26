@@ -40,7 +40,6 @@ public class BattleSystem : MonoBehaviour
         enemyHud.SetData(enemyUnit.Pokemon);
         dialogBox.SetSkillNames(playerUnit.Pokemon.Skills);
         yield return dialogBox.TypeDialog($"やせいの {enemyUnit.Pokemon.Base.Name} があらわれた.");
-        yield return new WaitForSeconds(1);
         PlayerAction();
     }
 
@@ -67,15 +66,16 @@ public class BattleSystem : MonoBehaviour
         //技を決定
         Skill skill = playerUnit.Pokemon.Skills[currentSkill];
         yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}は{skill.Base.Name}をつかった");
-        yield return new WaitForSeconds(1);
 
         //Enemyダメージ計算
-        bool isFainted = enemyUnit.Pokemon.TakeDamage(skill, playerUnit.Pokemon);
+        DamageDetails damageDetails = enemyUnit.Pokemon.TakeDamage(skill, playerUnit.Pokemon);
         //HP反映
         yield return enemyHud.UpdateHP();
+        //相性/クリティカルのメッセージ
+        yield return ShowDamageDetails(damageDetails);
         //戦闘不能ならメッセージ
         //戦闘可能ならEnemySkill
-        if (isFainted)
+        if (damageDetails.Fainted)
         {
             yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}はやられた");
         }
@@ -92,21 +92,38 @@ public class BattleSystem : MonoBehaviour
         //技を決定
         Skill skill = enemyUnit.Pokemon.GetRandomSkill();
         yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}は{skill.Base.Name}をつかった");
-        yield return new WaitForSeconds(1);
 
         //Enemyダメージ計算
-        bool isFainted = playerUnit.Pokemon.TakeDamage(skill, enemyUnit.Pokemon);
+        DamageDetails damageDetails = playerUnit.Pokemon.TakeDamage(skill, enemyUnit.Pokemon);
         //HP反映
         yield return playerHud.UpdateHP();
+        //相性/クリティカルのメッセージ
+        yield return ShowDamageDetails(damageDetails);
         //戦闘不能ならメッセージ
         //戦闘可能ならEnemySkill
-        if (isFainted)
+        if (damageDetails.Fainted)
         {
             yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}はやられた");
         }
         else
         {
             PlayerAction();
+        }
+    }
+
+    IEnumerator ShowDamageDetails(DamageDetails damageDetails)
+    {
+        if (damageDetails.Critical > 1f)
+        {
+            yield return dialogBox.TypeDialog($"急所にあたった");
+        }
+        if (damageDetails.TypeEffectiveness > 1f)
+        {
+            yield return dialogBox.TypeDialog($"効果はバツグンだ");
+        }
+        else if (damageDetails.TypeEffectiveness < 1f)
+        {
+            yield return dialogBox.TypeDialog($"効果はいまひとつのようだ…");
         }
     }
 
