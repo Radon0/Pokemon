@@ -39,7 +39,7 @@ public class BattleSystem : MonoBehaviour
         playerHud.SetData(playerUnit.Pokemon);
         enemyHud.SetData(enemyUnit.Pokemon);
         dialogBox.SetSkillNames(playerUnit.Pokemon.Skills);
-        yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.name} appeared.");
+        yield return dialogBox.TypeDialog($"Ç‚ÇπÇ¢ÇÃ {enemyUnit.Pokemon.Base.Name} Ç™Ç†ÇÁÇÌÇÍÇΩ.");
         yield return new WaitForSeconds(1);
         PlayerAction();
     }
@@ -48,7 +48,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.PlayerAction;
         dialogBox.EnableActionSelector(true);
-        StartCoroutine(dialogBox.TypeDialog("Choose an action"));
+        StartCoroutine(dialogBox.TypeDialog("Ç«Ç§Ç∑ÇÈÅH"));
     }
 
     private void Update()

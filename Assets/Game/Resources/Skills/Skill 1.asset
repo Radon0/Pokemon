@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f5187e56baa1ad4babb0941215b5a71, type: 3}
   m_Name: Skill 1
   m_EditorClassIdentifier: 
-  name: Attack1
+  name: "\u3072\u3063\u304B\u304F"
   description: "\u304B\u3089\u3060\u3092\u3076\u3064\u3051\u308B"
   type: 1
   power: 34
   accuracy: 100
-  pp: 5
+  pp: 20
