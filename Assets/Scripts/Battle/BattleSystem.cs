@@ -57,7 +57,7 @@ public class BattleSystem : MonoBehaviour
         {
             HandleActionSelection();
         }
-        if (state == BattleState.PlayerSkill)
+        else if (state == BattleState.PlayerSkill)
         {
             HandleSkillSelection();
         }
@@ -82,7 +82,7 @@ public class BattleSystem : MonoBehaviour
             }
         }
 
-        void PlayerMove()
+        void PlayerSkill()
         {
             state = BattleState.PlayerSkill;
             dialogBox.EnableDialogText(false);
@@ -97,7 +97,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (currentAction == 0)
             {
-                PlayerMove();
+                PlayerSkill();
             }
         }
     }
@@ -133,6 +133,6 @@ public class BattleSystem : MonoBehaviour
         }
 
         //êFÇÇ¬ÇØÇƒÇ«ÇøÇÁÇëIëÇµÇƒÇÈÇ©ÇÌÇ©ÇÈÇÊÇ§Ç…Ç∑ÇÈ
-        //dialogBox.UpdateSkillSelection(currentSkill,playerUnit.Pokemon.Skills(currentSkill));
+        dialogBox.UpdateSkillSelection(currentSkill,playerUnit.Pokemon.Skills[currentSkill]);
     }
 }

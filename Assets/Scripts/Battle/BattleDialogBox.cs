@@ -63,7 +63,7 @@ public class BattleDialogBox : MonoBehaviour
 
         for(int i=0; i < actionTexts.Count; i++)
         {
-            if(selectAction == 1)
+            if(selectAction == i)
             {
                 actionTexts[i].color = highlightColor;
             }
@@ -79,7 +79,7 @@ public class BattleDialogBox : MonoBehaviour
     { 
         for (int i = 0; i < skillTexts.Count; i++)
         {
-            if (selectSkill == 1)
+            if (selectSkill == i)
             {
                 skillTexts[i].color = highlightColor;
             }
@@ -88,7 +88,7 @@ public class BattleDialogBox : MonoBehaviour
                 skillTexts[i].color = Color.black;
             }
         }
-        ppText.text = $"PP{skill.PP}/{skill.Base.PP}";
+        ppText.text = $"PP {skill.PP}/{skill.Base.PP}";
         typeText.text = skill.Base.Type.ToString();
     }
 
