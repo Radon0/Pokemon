@@ -51,6 +51,66 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(dialogBox.TypeDialog("どうする？"));
     }
 
+    void PlayerSkill()
+    {
+        state = BattleState.PlayerSkill;
+        dialogBox.EnableDialogText(false);
+        dialogBox.EnableActionSelector(false);
+        dialogBox.EnableSkillSelector(true);
+    }
+
+    //PlayerSkillの実行
+    IEnumerator PerformPlayerSkill()
+    {
+        state = BattleState.Busy;
+
+        //技を決定
+        Skill skill = playerUnit.Pokemon.Skills[currentSkill];
+        yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}は{skill.Base.Name}をつかった");
+        yield return new WaitForSeconds(1);
+
+        //Enemyダメージ計算
+        bool isFainted = enemyUnit.Pokemon.TakeDamage(skill, playerUnit.Pokemon);
+        //HP反映
+        yield return enemyHud.UpdateHP();
+        //戦闘不能ならメッセージ
+        //戦闘可能ならEnemySkill
+        if (isFainted)
+        {
+            yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}はやられた");
+        }
+        else
+        {
+            StartCoroutine(EnemySkill());
+        }
+    }
+
+    IEnumerator EnemySkill()
+    {
+        state = BattleState.EnemySkill;
+
+        //技を決定
+        Skill skill = enemyUnit.Pokemon.GetRandomSkill();
+        yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}は{skill.Base.Name}をつかった");
+        yield return new WaitForSeconds(1);
+
+        //Enemyダメージ計算
+        bool isFainted = playerUnit.Pokemon.TakeDamage(skill, enemyUnit.Pokemon);
+        //HP反映
+        yield return playerHud.UpdateHP();
+        //戦闘不能ならメッセージ
+        //戦闘可能ならEnemySkill
+        if (isFainted)
+        {
+            yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}はやられた");
+        }
+        else
+        {
+            PlayerAction();
+        }
+    }
+
+
     private void Update()
     {
         if(state==BattleState.PlayerAction)
@@ -80,14 +140,6 @@ public class BattleSystem : MonoBehaviour
             {
                 currentAction--;
             }
-        }
-
-        void PlayerSkill()
-        {
-            state = BattleState.PlayerSkill;
-            dialogBox.EnableDialogText(false);
-            dialogBox.EnableActionSelector(false);
-            dialogBox.EnableSkillSelector(true);
         }
 
         //色をつけてどちらを選択してるかわかるようにする
@@ -134,5 +186,15 @@ public class BattleSystem : MonoBehaviour
 
         //色をつけてどちらを選択してるかわかるようにする
         dialogBox.UpdateSkillSelection(currentSkill,playerUnit.Pokemon.Skills[currentSkill]);
+
+        if(Input.GetKeyDown(KeyCode.Z))
+        {
+            //技選択のUI非表示
+            dialogBox.EnableSkillSelector(false);
+            //メッセージ復活
+            dialogBox.EnableDialogText(true);
+            //技決定の処理
+            StartCoroutine(PerformPlayerSkill());
+        }
     }
 }

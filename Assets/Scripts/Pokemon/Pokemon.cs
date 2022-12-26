@@ -71,4 +71,26 @@ public class Pokemon
     {
         get { return Mathf.FloorToInt((Base.MaxHP * Level) / 100f) + 10; }
     }
+
+    public bool TakeDamage(Skill skill,Pokemon attacker)
+    {
+        float modifiers = Random.Range(0.85f, 1f);
+        float a = (2 * attacker.Level + 10) / 250f;
+        float d = a * skill.Base.Power * ((float)attacker.Attack / Defense) + 2;
+        int damage = Mathf.FloorToInt(d * modifiers);
+
+        HP -= damage;
+        if(HP<=0)
+        {
+            HP = 0;
+            return true;
+        }
+        return false;
+    }
+
+    public Skill GetRandomSkill()
+    {
+        int r = Random.Range(0, Skills.Count);
+        return Skills[r];
+    }
 }
