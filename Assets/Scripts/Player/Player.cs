@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask solidObjectsLayer;
     //‘‚Ş‚ç”»’è‚ÌLayer
     [SerializeField] LayerMask longGrassLayer;
+    [SerializeField] GameController gameController;
 
     private void Awake()
     {
@@ -28,7 +29,7 @@ public class Player : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void HandleUpdate()
     {
        //“®‚¢‚Ä‚¢‚È‚¢
        if(!isMoving)
@@ -109,6 +110,7 @@ public class Player : MonoBehaviour
             if(Random.Range(0,100) < 10)
             {
                 Debug.Log("ƒ‚ƒ“ƒXƒ^[‚É‘˜‹ö");
+                gameController.StartBattle();
             }
         }
     }

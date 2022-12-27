@@ -19,11 +19,13 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogBox dialogBox;
 
+    [SerializeField] GameController gameController;
+
     BattleState state;
     int currentAction;  //0:fight 1:run
     int currentSkill;   //0:leftup 1:rightup 2:leftdown 3:rightdown
 
-    private void Start()
+    public void StartBattle()
     {
         StartCoroutine(SetupBattle());
     }
@@ -81,6 +83,8 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}‚Í‚â‚ç‚ê‚½");
             enemyUnit.PlayerFaintAnimation();
+            yield return new WaitForSeconds(0.7f);
+            gameController.EndBattle();
         }
         else
         {
@@ -110,6 +114,8 @@ public class BattleSystem : MonoBehaviour
         {
             yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}‚Í‚â‚ç‚ê‚½");
             playerUnit.PlayerFaintAnimation();
+            yield return new WaitForSeconds(0.7f);
+            gameController.EndBattle();
         }
         else
         {
@@ -134,7 +140,7 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    private void Update()
+    public void HandleUpdate()
     {
         if(state==BattleState.PlayerAction)
         {
