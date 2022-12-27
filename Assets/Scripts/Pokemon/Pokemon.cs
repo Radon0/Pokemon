@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[System.Serializable]
 //レベルに応じたステータスの違うモンスターを生成するクラス
 //データのみを扱う：純粋C#のクラス
 public class Pokemon
 {
+    [SerializeField] PokemonBase _base;
+    [SerializeField] int level;
+
     //ベースとなるデータ
-    public PokemonBase Base { get; set; }
-    public int Level { get; set; }
+    public PokemonBase Base { get => _base; }
+    public int Level { get => level; }
 
     public int HP { get; set; }
 
@@ -16,15 +21,13 @@ public class Pokemon
     public List<Skill> Skills { get; set; }
 
    //コンストラクタ―：生成時の初期設定
-   public Pokemon(PokemonBase pBase,int pLevel)
+   public void Init()
     {
-        Base = pBase;
-        Level = pLevel;
         HP = MaxHP;
 
         Skills = new List<Skill>();
         //使える技の設定；覚える技のレベル以上なら、Movesに追加
-        foreach(LearnableSkill learnableSkill in pBase.LearnableSkills)
+        foreach(LearnableSkill learnableSkill in Base.LearnableSkills)
         {
             if(Level >= learnableSkill.Level)
             {
@@ -89,10 +92,13 @@ public class Pokemon
             Critical = critical,
             TypeEffectiveness = type
         };
-        
+
+        float attack = (skill.Base.IsSpecial) ? attacker.SpAttack : attacker.Attack;  //条件演算子?:
+        float defense = (skill.Base.IsSpecial) ? SpDefense : Defense;
+
         float modifiers = Random.Range(0.85f, 1f) * type * critical;
         float a = (2 * attacker.Level + 10) / 250f;
-        float d = a * skill.Base.Power * ((float)attacker.Attack / Defense) + 2;
+        float d = a * skill.Base.Power * ((float)attack / defense) + 2;
         int damage = Mathf.FloorToInt(d * modifiers);
 
         HP -= damage;

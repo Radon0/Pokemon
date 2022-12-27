@@ -6,8 +6,6 @@ using DG.Tweening;
 
 public class BattleUnit : MonoBehaviour
 {
-    [SerializeField] PokemonBase _base;  //戦わせるモンスターをセットする
-    [SerializeField] int level;
     [SerializeField] bool isPlayerUnit;
 
     public Pokemon Pokemon { get; set; }
@@ -25,11 +23,11 @@ public class BattleUnit : MonoBehaviour
 
     //バトルで使うモンスターを保持
     //モンスターの画像を反映
-    public void SetUp()
+    public void SetUp(Pokemon pokemon)
     {
         //_baseからレベルに応じたモンスターを生成する
         //BattleSystemで使うからプロパティに入れる
-        Pokemon = new Pokemon(_base, level);
+        Pokemon = pokemon;
 
         Image image = GetComponent<Image>();
         if (isPlayerUnit)

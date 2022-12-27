@@ -28,8 +28,13 @@ public class BattleSystem : MonoBehaviour
     int currentAction;  //0:fight 1:run
     int currentSkill;   //0:leftup 1:rightup 2:leftdown 3:rightdown
 
-    public void StartBattle()
+    PokemonParty playerParty;
+    Pokemon wildPokemon;
+
+    public void StartBattle(PokemonParty playerParty,Pokemon wildPokemon)
     {
+        this.playerParty = playerParty;
+        this.wildPokemon = wildPokemon;
         StartCoroutine(SetupBattle());
     }
 
@@ -38,8 +43,8 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Start;
 
         //ÉÇÉìÉXÉ^Å[ÇÃê∂ê¨Ç∆ï`âÊ
-        playerUnit.SetUp();
-        enemyUnit.SetUp();
+        playerUnit.SetUp(playerParty.GetHealthyPokemon());
+        enemyUnit.SetUp(wildPokemon);
         //HUDÇÃï`âÊ
         playerHud.SetData(playerUnit.Pokemon);
         enemyHud.SetData(enemyUnit.Pokemon);
@@ -70,6 +75,7 @@ public class BattleSystem : MonoBehaviour
 
         //ãZÇåàíË
         Skill skill = playerUnit.Pokemon.Skills[currentSkill];
+        skill.PP--;
         yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}ÇÕ{skill.Base.Name}ÇÇ¬Ç©Ç¡ÇΩ");
         playerUnit.PlayerAttackAnimation();
         yield return new WaitForSeconds(0.7f);
@@ -102,6 +108,7 @@ public class BattleSystem : MonoBehaviour
 
         //ãZÇåàíË
         Skill skill = enemyUnit.Pokemon.GetRandomSkill();
+        skill.PP--;
         yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}ÇÕ{skill.Base.Name}ÇÇ¬Ç©Ç¡ÇΩ");
         enemyUnit.PlayerAttackAnimation();
         yield return new WaitForSeconds(0.7f);
@@ -120,7 +127,21 @@ public class BattleSystem : MonoBehaviour
             playerUnit.PlayerFaintAnimation();
             yield return new WaitForSeconds(0.7f);
             //gameController.EndBattle();
-            BattleOver();
+            var nextPokemon = playerParty.GetHealthyPokemon();
+            if (nextPokemon != null)
+            {
+                //ÉÇÉìÉXÉ^Å[ÇÃê∂ê¨Ç∆ï`âÊ
+                playerUnit.SetUp(nextPokemon);
+                //HUDÇÃï`âÊ
+                playerHud.SetData(nextPokemon);
+                dialogBox.SetSkillNames(nextPokemon.Skills);
+                yield return dialogBox.TypeDialog($"Ç¢ÇØÅI {nextPokemon.Base.Name}!");
+                PlayerAction();
+            }
+            else
+            {
+                BattleOver();
+            }
         }
         else
         {
