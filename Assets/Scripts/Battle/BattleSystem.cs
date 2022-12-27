@@ -66,7 +66,9 @@ public class BattleSystem : MonoBehaviour
         //‹Z‚ğŒˆ’è
         Skill skill = playerUnit.Pokemon.Skills[currentSkill];
         yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}‚Í{skill.Base.Name}‚ğ‚Â‚©‚Á‚½");
-
+        playerUnit.PlayerAttackAnimation();
+        yield return new WaitForSeconds(0.7f);
+        enemyUnit.PlayerHitAnimation();
         //Enemyƒ_ƒ[ƒWŒvZ
         DamageDetails damageDetails = enemyUnit.Pokemon.TakeDamage(skill, playerUnit.Pokemon);
         //HP”½‰f
@@ -78,6 +80,7 @@ public class BattleSystem : MonoBehaviour
         if (damageDetails.Fainted)
         {
             yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}‚Í‚â‚ç‚ê‚½");
+            enemyUnit.PlayerFaintAnimation();
         }
         else
         {
@@ -92,7 +95,9 @@ public class BattleSystem : MonoBehaviour
         //‹Z‚ğŒˆ’è
         Skill skill = enemyUnit.Pokemon.GetRandomSkill();
         yield return dialogBox.TypeDialog($"{enemyUnit.Pokemon.Base.Name}‚Í{skill.Base.Name}‚ğ‚Â‚©‚Á‚½");
-
+        enemyUnit.PlayerAttackAnimation();
+        yield return new WaitForSeconds(0.7f);
+        playerUnit.PlayerHitAnimation();
         //Enemyƒ_ƒ[ƒWŒvZ
         DamageDetails damageDetails = playerUnit.Pokemon.TakeDamage(skill, enemyUnit.Pokemon);
         //HP”½‰f
@@ -104,6 +109,7 @@ public class BattleSystem : MonoBehaviour
         if (damageDetails.Fainted)
         {
             yield return dialogBox.TypeDialog($"{playerUnit.Pokemon.Base.Name}‚Í‚â‚ç‚ê‚½");
+            playerUnit.PlayerFaintAnimation();
         }
         else
         {
