@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Player : MonoBehaviour
     [SerializeField] LayerMask solidObjectsLayer;
     //草むら判定のLayer
     [SerializeField] LayerMask longGrassLayer;
+    //相互依存を解消：UnityAction
+    public UnityAction OnEncounted;
     [SerializeField] GameController gameController;
 
     private void Awake()
@@ -110,7 +113,9 @@ public class Player : MonoBehaviour
             if(Random.Range(0,100) < 10)
             {
                 Debug.Log("モンスターに遭遇");
-                gameController.StartBattle();
+                //gameController.StartBattle();
+                OnEncounted();
+                animator.SetBool("isMoving", false);
             }
         }
     }

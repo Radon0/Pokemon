@@ -17,6 +17,12 @@ public class GameController : MonoBehaviour
 
     GameState state = GameState.FreeRoam;
 
+    private void Start()
+    {
+        player.OnEncounted += StartBattle;
+        battleSystem.BattleOver += EndBattle;
+    }
+
     public void StartBattle()
     {
         state = GameState.Battle;
