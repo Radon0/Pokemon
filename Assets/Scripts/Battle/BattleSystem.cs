@@ -19,6 +19,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] BattleHud playerHud;
     [SerializeField] BattleHud enemyHud;
     [SerializeField] BattleDialogBox dialogBox;
+    [SerializeField] PartyScreen partyScreen;
 
     //[SerializeField] GameController gameController;
     public UnityAction BattleOver;
@@ -31,7 +32,7 @@ public class BattleSystem : MonoBehaviour
     PokemonParty playerParty;
     Pokemon wildPokemon;
 
-    public void StartBattle(PokemonParty playerParty,Pokemon wildPokemon)
+    public void StartBattle(PokemonParty playerParty, Pokemon wildPokemon)
     {
         this.playerParty = playerParty;
         this.wildPokemon = wildPokemon;
@@ -48,6 +49,9 @@ public class BattleSystem : MonoBehaviour
         //HUDの描画
         playerHud.SetData(playerUnit.Pokemon);
         enemyHud.SetData(enemyUnit.Pokemon);
+
+        partyScreen.Init();
+
         dialogBox.SetSkillNames(playerUnit.Pokemon.Skills);
         yield return dialogBox.TypeDialog($"やせいの {enemyUnit.Pokemon.Base.Name} があらわれた.");
         PlayerAction();
@@ -57,7 +61,13 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.PlayerAction;
         dialogBox.EnableActionSelector(true);
-        StartCoroutine(dialogBox.TypeDialog("どうする？"));
+        dialogBox.SetDialog("どうする？");
+    }
+
+    void OpenPartyScreen()
+    {
+        partyScreen.SetPartyData(playerParty.Pokemons);
+        partyScreen.gameObject.SetActive(true);
     }
 
     void PlayerSkill()
@@ -181,21 +191,24 @@ public class BattleSystem : MonoBehaviour
     //PlayerActionでの行動を処理する
     void HandleActionSelection()
     {
-        //下を入力するとRun,上を入力するとFightになる
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (currentAction < 1)
-            {
-                currentAction++;
-            }
+        if(Input.GetKeyDown(KeyCode.RightArrow))
+        {   
+            currentAction++;
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentAction > 0)
-            {
-                currentAction--;
-            }
+            currentAction--;
         }
+        else if(Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            currentAction += 2;
+        }
+        else if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            currentAction -= 2;
+        }
+
+        currentAction = Mathf.Clamp(currentAction, 0, 3);
 
         //色をつけてどちらを選択してるかわかるようにする
         dialogBox.UpdateActionSelection(currentAction);
@@ -206,38 +219,41 @@ public class BattleSystem : MonoBehaviour
             {
                 PlayerSkill();
             }
+            else if (currentAction == 1)
+            {
+                //Bag
+            }
+            else if (currentAction == 2)
+            {
+                //Pokemon
+                OpenPartyScreen();
+            }
+            else if (currentAction == 3)
+            {
+                //Run
+            }
         }
     }
     void HandleSkillSelection()
     {
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            if (currentSkill < playerUnit.Pokemon.Skills.Count - 1)
-            {
-                currentSkill++;
-            }
+            currentSkill++;
         }
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (currentSkill > 0)
-            {
-                currentSkill--;
-            }
+            currentSkill--;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (currentSkill < playerUnit.Pokemon.Skills.Count - 2)
-            {
-                currentSkill += 2;
-            }
+            currentSkill += 2;
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            if (currentSkill > 1)
-            {
-                currentSkill -= 2;
-            }
+            currentSkill -= 2;
         }
+
+        currentSkill = Mathf.Clamp(currentSkill, 0, playerUnit.Pokemon.Skills.Count - 1);
 
         //色をつけてどちらを選択してるかわかるようにする
         dialogBox.UpdateSkillSelection(currentSkill,playerUnit.Pokemon.Skills[currentSkill]);
@@ -250,6 +266,14 @@ public class BattleSystem : MonoBehaviour
             dialogBox.EnableDialogText(true);
             //技決定の処理
             StartCoroutine(PerformPlayerSkill());
+        }
+        else if(Input.GetKeyDown(KeyCode.X))
+        {
+            //技選択のUI非表示
+            dialogBox.EnableSkillSelector(false);
+            //メッセージ復活
+            dialogBox.EnableDialogText(true);
+            PlayerAction();
         }
     }
 }
